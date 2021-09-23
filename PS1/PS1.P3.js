@@ -4,6 +4,8 @@ const process = (str, decorator) => decorator(str)
 
 // first expression
 const breakStrOnC = str => {
+    // store each section of str starting with C in tempStr
+    // and push to arr
     let arr = []
     let tempStr = ''
     
@@ -22,6 +24,8 @@ const breakStrOnC = str => {
 
 
 // Second expression
+
+// use match() to find occurences of 'a'
 const countA = str => (str.match(/a/g) || []).length
 const replaceA = str => str.replace(/a/g, 'A')
 
