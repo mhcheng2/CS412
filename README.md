@@ -1,3 +1,3 @@
-# CS412
-## Meng-Hsin Cheng <br />
-## U25113305
+# CS412 PS1
+Meng-Hsin Cheng <br />
+U25113305
