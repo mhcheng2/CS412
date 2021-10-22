@@ -1,5 +1,32 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  if title
+    h1 #{title}
+    h2 Using Promises
+    form(action='/post', method='post')
+      label Enter Latitude:
+        input(type='text', name='lat')
+      label Enter Longitude:
+        input(type='text', name='lng')
+      button(type='submit') Submit
+
+    h2 Using async await and fetch
+    form(action='/fetch-post', method='post')
+      label Enter Latitude:
+        input(type='text', name='lat')
+      label Enter Longitude:
+        input(type='text', name='lng')
+      button(type='submit') Submit
+
+    h2 Using HTTPS request
+    form(action='/request-post', method='post')
+      label Enter Latitude:
+        input(type='text', name='lat')
+      label Enter Longitude:
+        input(type='text', name='lng')
+        button(type='submit') Submit
+
+  else if sunrise
+    p Sunrise time #{sunrise}
+    p Sunset time #{sunset}
