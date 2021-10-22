@@ -9,6 +9,7 @@ const dotenv = require('dotenv').config()
 /* Using API from https://sunrise-sunset.org/api
    Returns sunset and sunrise time with given coordinates */
 
+// uri is https://api.sunrise-sunset.org/json?
 const uri = process.env.API_URI
 
 /* Home View*/
