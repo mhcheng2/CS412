@@ -4,13 +4,15 @@ const request = require('request');
 const {response} = require("express");
 const fetch = require('node-fetch');
 const https = require('https');
-
+const dotenv = require('dotenv').config()
 
 /* Using API from https://sunrise-sunset.org/api
    Returns sunset and sunrise time with given coordinates */
 
+const uri = process.env.API_URI
+
 /* Home View*/
-router.get('/', function(req, res, next) {
+router.get('/', async function(req, res, next) {
     res.render('index', {title: 'Calling API from https://sunrise-sunset.org/api, using three methods'})
 })
 
@@ -18,9 +20,7 @@ router.get('/', function(req, res, next) {
 /* problem B, post using promises */
 router.post('/post', function (req, res, next) {
     return new Promise((resolve, reject) => {
-        const lat = req.body.lat
-        const lng = req.body.lng
-        request(`https://api.sunrise-sunset.org/json?lat=${lat}&lng=${lng}`, (err, response, body) => {
+        request(uri + `lat=${req.body.lat}&lng=${req.body.lng}`, (err, response, body) => {
             if (response.statusCode == 200) {
                 resolve(body);
             } else {
@@ -42,7 +42,7 @@ router.post('/post', function (req, res, next) {
 
 // Problem C, post using async await with fetch
 router.post('/fetch-post', async function(req, res, next) {
-        const fetchData = await fetch(`https://api.sunrise-sunset.org/json?lat=${req.body.lat}&lng=${req.body.lng}`)
+        const fetchData = await fetch(uri + `lat=${req.body.lat}&lng=${req.body.lng}`)
         const data = await fetchData.json();
         res.render('index', {sunrise: data.results.sunrise, sunset: data.results.sunset});
 })
@@ -65,7 +65,7 @@ router.post('/request-post', function(req, res, next){
         });
     }
 
-    https.request(`https://api.sunrise-sunset.org/json?lat=${req.body.lat}&lng=${req.body.lng}`, callback).end();
+    https.request(uri + `lat=${req.body.lat}&lng=${req.body.lng}`, callback).end();
 })
 
 
