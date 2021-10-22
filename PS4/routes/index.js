@@ -41,6 +41,7 @@ router.post('/post', function (req, res, next) {
         );
 })
 
+
 // Problem C, post using async await with fetch
 router.post('/fetch-post', async function(req, res, next) {
         const fetchData = await fetch(uri + `lat=${req.body.lat}&lng=${req.body.lng}`)
@@ -65,9 +66,7 @@ router.post('/request-post', function(req, res, next){
             res.render('index', {sunrise: result.sunrise, sunset: result.sunset});
         });
     }
-
     https.request(uri + `lat=${req.body.lat}&lng=${req.body.lng}`, callback).end();
 })
-
 
 module.exports = router;
