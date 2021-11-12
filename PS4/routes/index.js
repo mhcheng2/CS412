@@ -5,12 +5,18 @@ const {response} = require("express");
 const fetch = require('node-fetch');
 const https = require('https');
 const dotenv = require('dotenv').config()
+const redis = require('redis')
 
 /* Using API from https://sunrise-sunset.org/api
    Returns sunset and sunrise time with given coordinates */
 
 // uri is https://api.sunrise-sunset.org/json?
 const uri = process.env.API_URI
+
+// Redis caching, implemented in part C: async await function
+const REDIS_PORT = 6379
+const client = redis.createClient(REDIS_PORT)
+client.on("error", (error) => console.error(error));
 
 /* Home View*/
 router.get('/', async function(req, res, next) {
@@ -43,10 +49,35 @@ router.post('/post', function (req, res, next) {
 
 
 // Problem C, post using async await with fetch
+// Added redis caching
 router.post('/fetch-post', async function(req, res, next) {
-        const fetchData = await fetch(uri + `lat=${req.body.lat}&lng=${req.body.lng}`)
-        const data = await fetchData.json();
-        res.render('index', {sunrise: data.results.sunrise, sunset: data.results.sunset});
+    client.get(req.body.lat, async (_, cached_data) => {
+        if (cached_data) {
+            //send the response from cache
+            return res.send({
+                success: true,
+                message: JSON.parse(cached_data),
+                meta_data: "from cache",
+            });
+        } else {
+            //fetch the data.
+            const fetchData = await fetch(uri + `lat=${req.body.lat}&lng=${req.body.lng}`)
+            const data = await fetchData.json();
+            //set the data on cache
+            client.set(req.body.lat, JSON.stringify(data));
+
+            // set cache to expire in 15 seconds
+            client.expire(req.body.lat, 15);
+
+            // send response indicating the result is from the server
+            return res.send({
+                success: true,
+                message: data.results,
+                meta_data: "from server",
+            });
+            //res.render('index', {sunrise: data.results.sunrise, sunset: data.results.sunset});
+        }
+    });
 })
 
 
