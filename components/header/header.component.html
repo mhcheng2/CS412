@@ -1,0 +1,12 @@
+<form [formGroup]="loginForm" #userlogin = "ngForm" (ngSubmit) = "onClickSubmit(userlogin.value)">
+    <div class="form-group">
+        <label>Latitude</label>
+        <input type="lat" class="form-group" formControlName="lat" placeholder="Enter Latitude" ngModel> 
+        <span *ngIf="lat?.invalid">Input required</span>
+    </div>
+    <div class="form-group">
+        <label>Longitude</label>
+        <input type="long" class="form-group" formControlName="long" placeholder="Enter Longitude" ngModel> 
+    </div>
+    <button type="submit">Sign Up</button>
+</form>
