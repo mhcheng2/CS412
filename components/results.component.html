@@ -1,0 +1,12 @@
+<form #signupForm="ngForm" (ngSubmit)="registerUser(signupForm)">
+    <label for="lat">lat</label>
+    <input type="lat" name="lat" id="lat" ngModel>
+   
+  
+    <label for="long">long</label>
+    <input type="long" name="long" id="long" ngModel>
+  
+    <button type="submit">Sign Up</button>
+  </form>
+
+  {{ posts }}
